@@ -21,4 +21,8 @@ class ArtworkListViewModel: ViewModel() {
             }
         }
     }
+
+    suspend fun addArtwork(artwork: Artwork) {
+        artworkRepository.addArtwork(artwork)
+    }
 }

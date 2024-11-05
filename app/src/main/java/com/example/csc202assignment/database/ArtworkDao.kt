@@ -1,6 +1,7 @@
 package com.example.csc202assignment.database
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import com.example.csc202assignment.Artwork
 import kotlinx.coroutines.flow.Flow
@@ -9,4 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface ArtworkDao {
     @Query("SELECT * FROM artwork")
     fun getArtworks(): Flow<List<Artwork>>
+
+    @Insert
+    suspend fun addArtwork(artwork: Artwork)
 }

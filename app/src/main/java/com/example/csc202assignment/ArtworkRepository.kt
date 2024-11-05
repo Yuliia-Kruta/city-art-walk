@@ -53,6 +53,10 @@ class ArtworkRepository private constructor(
         emit(dummyData)
     }
 
+    suspend fun addArtwork(artwork: Artwork) {
+        database.artworkDao().addArtwork(artwork)
+    }
+
     companion object {
         private var INSTANCE: ArtworkRepository? = null
 

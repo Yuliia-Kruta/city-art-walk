@@ -2,6 +2,9 @@ package com.example.csc202assignment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -13,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.csc202assignment.databinding.FragmentArtworkListBinding
 import kotlinx.coroutines.launch
+import java.util.Date
+import java.util.UUID
 
 class ArtworkListFragment: Fragment() {
 
@@ -56,5 +61,32 @@ class ArtworkListFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_artwork_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.new_artwork -> {
+                showNewArtwork()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showNewArtwork() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val newArtwork = Artwork(
+                id = UUID.randomUUID(),
+                title = "",
+                date = Date(),
+                address = ""
+            )
+            artworkListViewModel.addArtwork(newArtwork)
+        }
     }
 }

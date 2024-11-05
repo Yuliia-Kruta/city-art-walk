@@ -21,9 +21,9 @@ class ArtworkRepository private constructor(
         )
         .build()
 
-    //fun getArtworks(): Flow<List<Artwork>> = database.artworkDao().getArtworks()
+    fun getArtworks(): Flow<List<Artwork>> = database.artworkDao().getArtworks()
 
-    fun getArtworks(): Flow<List<Artwork>> = flow {
+    /*fun getArtworks(): Flow<List<Artwork>> = flow {
         val dummyData = listOf(
             Artwork(
                 id = UUID.randomUUID(),
@@ -51,7 +51,7 @@ class ArtworkRepository private constructor(
             )
         )
         emit(dummyData)
-    }
+    }*/
 
     suspend fun addArtwork(artwork: Artwork) {
         database.artworkDao().addArtwork(artwork)

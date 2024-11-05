@@ -10,16 +10,21 @@ import java.util.UUID
 class ArtworkHolder(
     private val binding: ListItemArtworkBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(artwork: Artwork) {
+    fun bind(artwork: Artwork, onArtworkClicked: (artworkId: UUID) -> Unit) {
         binding.artworkTitle.text = artwork.title
         binding.artworkDate.text = artwork.date.toString()
         binding.artworkAddress.text = artwork.address
+
+        binding.root.setOnClickListener {
+            onArtworkClicked(artwork.id)
+        }
 
     }
 }
 
 class ArtworkListAdapter(
-    private val artworks: List<Artwork>
+    private val artworks: List<Artwork>,
+    private val onArtworkClicked: (artworkId: UUID) -> Unit
 ) : RecyclerView.Adapter<ArtworkHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -32,7 +37,7 @@ class ArtworkListAdapter(
 
     override fun onBindViewHolder(holder: ArtworkHolder, position: Int) {
         val artwork = artworks[position]
-        holder.bind(artwork)
+        holder.bind(artwork, onArtworkClicked)
     }
 
     override fun getItemCount() = artworks.size

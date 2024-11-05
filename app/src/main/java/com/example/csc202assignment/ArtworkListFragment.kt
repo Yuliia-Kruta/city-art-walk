@@ -53,7 +53,11 @@ class ArtworkListFragment: Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 artworkListViewModel.artworks.collect { artworks ->
                     binding.artworkRecyclerView.adapter =
-                        ArtworkListAdapter(artworks)
+                        ArtworkListAdapter(artworks) { artworkId ->
+                            findNavController().navigate(
+                                ArtworkListFragmentDirections.showArtworkDetail(artworkId)
+                            )
+                        }
                 }
             }
         }
@@ -88,6 +92,9 @@ class ArtworkListFragment: Fragment() {
                 address = ""
             )
             artworkListViewModel.addArtwork(newArtwork)
+            findNavController().navigate(
+                ArtworkListFragmentDirections.showArtworkDetail(newArtwork.id)
+            )
         }
     }
 }

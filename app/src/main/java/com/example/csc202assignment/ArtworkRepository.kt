@@ -3,15 +3,19 @@ package com.example.csc202assignment
 import android.content.Context
 import androidx.room.Room
 import com.example.csc202assignment.database.ArtworkDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
 
 private const val DATABASE_NAME = "artwork-database"
 
 class ArtworkRepository private constructor(
-    context: Context
+    context: Context,
+    private val coroutineScope: CoroutineScope = GlobalScope
 ){
     private val database: ArtworkDatabase = Room
         .databaseBuilder(
@@ -52,6 +56,13 @@ class ArtworkRepository private constructor(
         )
         emit(dummyData)
     }*/
+    suspend fun getArtwork(id: UUID): Artwork = database.artworkDao().getArtwork(id)
+
+    fun updateArtwork(artwork: Artwork) {
+        coroutineScope.launch {
+            database.artworkDao().updateArtwork(artwork)
+        }
+    }
 
     suspend fun addArtwork(artwork: Artwork) {
         database.artworkDao().addArtwork(artwork)

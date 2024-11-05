@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.csc202assignment.ArtworkListFragmentDirections
 import com.example.csc202assignment.databinding.FragmentArtworkListBinding
 import kotlinx.coroutines.launch
 import java.util.Date

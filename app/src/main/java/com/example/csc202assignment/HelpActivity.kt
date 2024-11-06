@@ -2,6 +2,8 @@ package com.example.csc202assignment
 
 import android.os.Bundle
 import android.util.Log
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +19,13 @@ class HelpActivity : AppCompatActivity() {
 
         webView = findViewById(R.id.help_webview)
         webView.settings.javaScriptEnabled = true
+        webView.settings.domStorageEnabled = true
+
         webView.webViewClient = WebViewClient()
-        //webView.loadUrl("https://www.queensland.com/au/en/places-to-see/destinations/brisbane/where-to-find-street-art-in-brisbane")
-        webView.loadUrl("https://www.usc.edu.au/")
+
+
+        webView.loadUrl("https://www.queensland.com/au/en/places-to-see/destinations/brisbane/where-to-find-street-art-in-brisbane")
+        //webView.loadUrl("https://www.usc.edu.au/")
     }
 
     override fun onBackPressed() {

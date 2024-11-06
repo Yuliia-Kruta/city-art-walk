@@ -1,5 +1,6 @@
 package com.example.csc202assignment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -78,6 +79,11 @@ class ArtworkListFragment: Fragment() {
         return when (item.itemId) {
             R.id.new_artwork -> {
                 showNewArtwork()
+                true
+            }
+            R.id.show_help -> {
+                val intent = Intent(requireContext(), HelpActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)

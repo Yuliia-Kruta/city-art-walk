@@ -9,16 +9,20 @@ import android.view.ViewGroup
 import androidx.core.content.FileProvider
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.csc202assignment.ArtworkDetailFragmentDirections
 import com.example.csc202assignment.databinding.FragmentArtworkDetailBinding
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Date
+
+private const val DATE_FORMAT = "EEE, MMM, dd"
 
 class ArtworkDetailFragment: Fragment() {
 
@@ -70,6 +74,14 @@ class ArtworkDetailFragment: Fragment() {
                 }
             }
         }
+
+        setFragmentResultListener(
+            DatePickerFragment.REQUEST_KEY_DATE
+        ) { _, bundle ->
+            val newDate =
+                bundle.getSerializable(DatePickerFragment.BUNDLE_KEY_DATE) as Date
+            artworkDetailViewModel.updateArtwork { it.copy(date = newDate) }
+        }
     }
 
     override fun onDestroyView() {
@@ -85,7 +97,13 @@ class ArtworkDetailFragment: Fragment() {
             if (artworkAddress.text.toString() != artwork.address) {
                 artworkAddress.setText(artwork.address)
             }
-            artworkDate.text = artwork.date.toString()
+            //artworkDate.text = artwork.date.toString()
+            artworkDate.text = Utils.formatArtworkDate(artwork.date)
+            artworkDate.setOnClickListener {
+                findNavController().navigate(
+                    ArtworkDetailFragmentDirections.selectDate(artwork.date)
+                )
+            }
         }
     }
 }

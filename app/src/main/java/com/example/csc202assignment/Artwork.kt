@@ -11,5 +11,7 @@ data class Artwork(
     val title: String,
     val date: Date,
     val address: String,
-    val photoFileName: String? = null
+    val photoFileName: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null
 )

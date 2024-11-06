@@ -3,12 +3,15 @@ package com.example.csc202assignment
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.doOnLayout
 import androidx.core.widget.doOnTextChanged
@@ -23,11 +26,19 @@ import androidx.navigation.fragment.navArgs
 import com.example.csc202assignment.ArtworkDetailFragmentDirections
 import com.example.csc202assignment.Utils.getScaledBitmap
 import com.example.csc202assignment.databinding.FragmentArtworkDetailBinding
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.api.GoogleApiActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Date
 
-private const val DATE_FORMAT = "EEE, MMM, dd"
 
 class ArtworkDetailFragment: Fragment() {
 
@@ -54,6 +65,24 @@ class ArtworkDetailFragment: Fragment() {
     }
 
     private var photoName: String? = null
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            getLocation()
+        } else {
+            Log.d("GPS", "Permission denied.")
+        }
+    }
+
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,6 +129,25 @@ class ArtworkDetailFragment: Fragment() {
                 Uri.parse("")
             )
             artworkCamera.isEnabled = canResolveIntent(captureImageIntent)
+
+            artworkGetGps.setOnClickListener {
+                artworkCoordinates.text = getString(R.string.getting_location)
+                getLocation()
+            }
+            binding.artworkShowMap.setOnClickListener {
+                val artwork = artworkDetailViewModel.artwork.value
+                if (artwork?.latitude != null && artwork.longitude != null) {
+                    val intent = Intent(requireContext(), MapsActivity::class.java).apply {
+                        putExtra("LATITUDE", artwork.latitude)
+                        putExtra("LONGITUDE", artwork.longitude)
+                    }
+                    startActivity(intent)
+                } else {
+                    Log.d("GPS", "Coordinates not available.")
+                }
+            }
+
+
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -132,7 +180,6 @@ class ArtworkDetailFragment: Fragment() {
             if (artworkAddress.text.toString() != artwork.address) {
                 artworkAddress.setText(artwork.address)
             }
-            //artworkDate.text = artwork.date.toString()
             artworkDate.text = Utils.formatArtworkDate(artwork.date)
             artworkDate.setOnClickListener {
                 findNavController().navigate(
@@ -148,6 +195,16 @@ class ArtworkDetailFragment: Fragment() {
                         .show(childFragmentManager, "zoomedArtwork")
                 }
             }
+
+            if (artwork.latitude != null && artwork.longitude != null) {
+                val coordinatesText = "Lat: ${artwork.latitude}, Lon: ${artwork.longitude}"
+                artworkCoordinates.text = coordinatesText
+                artworkShowMap.isEnabled = true
+            } else {
+                artworkCoordinates.text = getString(R.string.coordinates_not_available)
+                artworkShowMap.isEnabled = false
+            }
+
         }
     }
 
@@ -183,4 +240,44 @@ class ArtworkDetailFragment: Fragment() {
             }
         }
     }
+
+
+    private fun getLocation() {
+        when {
+            ActivityCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                Log.d("GPS", "Have permissions. Try to get a location")
+                if (GoogleApiAvailability.getInstance()
+                        .isGooglePlayServicesAvailable(requireContext()) == ConnectionResult.SUCCESS) {
+                    fusedLocationProviderClient.getCurrentLocation(
+                        Priority.PRIORITY_HIGH_ACCURACY,
+                        object : CancellationToken() {
+                            override fun onCanceledRequested(p0: OnTokenCanceledListener) =
+                                CancellationTokenSource().token
+
+                            override fun isCancellationRequested() = false
+                        }
+                    ).addOnSuccessListener { location: Location? ->
+                        location?.let {
+                            artworkDetailViewModel.updateArtwork { oldArtwork ->
+                                oldArtwork.copy(latitude = location.latitude, longitude = location.longitude)
+                            }
+                            binding.artworkCoordinates.text = "Lat: ${location.latitude}, Lon: ${location.longitude}"
+                        }
+                        Log.d("GPS", "Got a location: $location")
+                    }.addOnFailureListener {
+                        binding.artworkCoordinates.text = getString(R.string.coordinates_not_available)
+                        Log.d("GPS", "Failed to get location.")
+                }
+                    }
+            }
+            else -> {
+                requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+        }
+    }
+
+
 }

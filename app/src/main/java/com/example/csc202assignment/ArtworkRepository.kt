@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.csc202assignment.database.ArtworkDatabase
 import com.example.csc202assignment.database.migration_1_2
+import com.example.csc202assignment.database.migration_2_3
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +25,7 @@ class ArtworkRepository private constructor(
             ArtworkDatabase::class.java,
             DATABASE_NAME
         )
-        .addMigrations(migration_1_2)
+        .addMigrations(migration_1_2, migration_2_3)
         .build()
 
     fun getArtworks(): Flow<List<Artwork>> = database.artworkDao().getArtworks()

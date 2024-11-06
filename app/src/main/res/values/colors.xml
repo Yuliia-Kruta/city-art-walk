@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="my_teal">#20948b</color>
     <color name="my_teal_secondary">#65b3ac</color>
+    <color name="danger">#F1475B</color>
 </resources>

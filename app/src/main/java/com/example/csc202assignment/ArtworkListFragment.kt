@@ -56,7 +56,7 @@ class ArtworkListFragment: Fragment() {
                     binding.artworkRecyclerView.adapter =
                         ArtworkListAdapter(artworks) { artworkId ->
                             findNavController().navigate(
-                                ArtworkListFragmentDirections.showArtworkDetail(artworkId)
+                                ArtworkListFragmentDirections.showArtworkDetail(artworkId, false)
                             )
                         }
                 }
@@ -94,7 +94,7 @@ class ArtworkListFragment: Fragment() {
             )
             artworkListViewModel.addArtwork(newArtwork)
             findNavController().navigate(
-                ArtworkListFragmentDirections.showArtworkDetail(newArtwork.id)
+                ArtworkListFragmentDirections.showArtworkDetail(newArtwork.id, true)
             )
         }
     }

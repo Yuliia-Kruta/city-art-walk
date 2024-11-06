@@ -112,4 +112,11 @@
         android:layout_height="wrap_content"
         android:text="@string/share_artwork_text" />
 
+    <Button
+        android:id="@+id/artwork_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_artwork"
+        android:backgroundTint="@color/danger" />
+
 </LinearLayout>

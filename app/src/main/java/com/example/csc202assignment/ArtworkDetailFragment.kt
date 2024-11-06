@@ -99,6 +99,8 @@ class ArtworkDetailFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val isNewArtwork = args.isNewArtwork
+
         binding.apply {
             artworkTitle.doOnTextChanged{
                 text, _, _, _ ->
@@ -149,7 +151,18 @@ class ArtworkDetailFragment: Fragment() {
                 }
             }
 
+        }
 
+        if (isNewArtwork) {
+            binding.artworkDelete.visibility = View.GONE
+        } else {
+            binding.artworkDelete.visibility = View.VISIBLE
+            binding.artworkDelete.setOnClickListener {
+                lifecycleScope.launch {
+                    artworkDetailViewModel.deleteArtwork()
+                    findNavController().navigateUp()
+                }
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {

@@ -1,6 +1,7 @@
 package com.example.csc202assignment.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -21,4 +22,7 @@ interface ArtworkDao {
 
     @Insert
     suspend fun addArtwork(artwork: Artwork)
+
+    @Delete
+    suspend fun deleteArtwork(artwork: Artwork)
 }

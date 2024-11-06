@@ -28,6 +28,16 @@ class ArtworkDetailViewModel(artworkId: UUID) : ViewModel() {
         }
     }
 
+    fun deleteArtwork(){
+        val artworkToDelete = _artwork.value
+        artworkToDelete?.let {
+            viewModelScope.launch {
+                artworkRepository.deleteArtwork(it)
+            }
+        }
+    }
+
+
     override fun onCleared() {
         super.onCleared()
         artwork.value?.let { artworkRepository.updateArtwork(it) }

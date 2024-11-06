@@ -25,6 +25,9 @@
         <action
             android:id="@+id/selectDate"
             app:destination="@id/datePickerFragment" />
+        <argument
+            android:name="isNewArtwork"
+            app:argType="boolean" />
     </fragment>
     <dialog
         android:id="@+id/datePickerFragment"

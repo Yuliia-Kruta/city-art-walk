@@ -42,6 +42,12 @@ class ArtworkRepository private constructor(
         database.artworkDao().addArtwork(artwork)
     }
 
+    suspend fun deleteArtwork(artwork: Artwork) {
+        coroutineScope.launch {
+            database.artworkDao().deleteArtwork(artwork)
+        }
+    }
+
     companion object {
         private var INSTANCE: ArtworkRepository? = null
 

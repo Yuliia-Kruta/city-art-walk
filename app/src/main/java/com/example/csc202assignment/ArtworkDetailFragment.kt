@@ -141,6 +141,13 @@ class ArtworkDetailFragment: Fragment() {
             }
 
             updatePhoto(artwork.photoFileName)
+
+            artworkPhoto.setOnClickListener {
+                artwork.photoFileName?.let { photoFileName ->
+                    ArtworkZoomDialogFragment.newInstance(photoFileName)
+                        .show(childFragmentManager, "zoomedArtwork")
+                }
+            }
         }
     }
 

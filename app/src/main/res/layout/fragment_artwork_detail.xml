@@ -76,12 +76,6 @@
         android:hint="@string/artwork_address_hint"
         android:inputType="text" />
 
-    <Button
-        android:id="@+id/artwork_share"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/share_artwork_text" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -111,5 +105,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/show_map_text"/>
+
+    <Button
+        android:id="@+id/artwork_share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share_artwork_text" />
 
 </LinearLayout>

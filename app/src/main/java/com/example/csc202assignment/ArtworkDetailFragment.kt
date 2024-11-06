@@ -6,6 +6,7 @@ import android.content.pm.ResolveInfo
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +40,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Date
 
+private const val DATE_FORMAT = "dd MMM yyyy"
 
 class ArtworkDetailFragment: Fragment() {
 
@@ -205,6 +207,22 @@ class ArtworkDetailFragment: Fragment() {
                 artworkShowMap.isEnabled = false
             }
 
+            artworkShare.setOnClickListener{
+                val summaryIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, getArtworkSummary(artwork))
+                    putExtra(
+                        Intent.EXTRA_SUBJECT,
+                        getString(R.string.artwork_summary_subject)
+                    )
+                }
+                val chooserIntent = Intent.createChooser(
+                    summaryIntent,
+                    getString(R.string.share_summary)
+                )
+                startActivity(chooserIntent)
+            }
+
         }
     }
 
@@ -277,6 +295,28 @@ class ArtworkDetailFragment: Fragment() {
                 requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
             }
         }
+    }
+
+    private fun getArtworkSummary(artwork: Artwork): String {
+        val dateString = DateFormat.format(DATE_FORMAT, artwork.date).toString()
+        val timeString = DateFormat.format("HH:mm", artwork.date).toString()
+        val artworkTitle = artwork.title
+        val artworkAddress = artwork.address
+        var artworkCoordinates = " not available"
+        if (artwork.latitude != null && artwork.longitude != null){
+            artworkCoordinates = ": latitude: ${artwork.latitude}, longitude: ${artwork.longitude}"
+        }
+        var artworkPhoto = artwork.photoFileName
+        if (artworkPhoto==null){
+            artworkPhoto = "unavailable"
+        } else {
+            artworkPhoto = "available in "+artwork.photoFileName
+        }
+
+        return getString(
+            R.string.artwork_summary,
+            timeString, dateString, artworkTitle, artworkAddress, artworkCoordinates, artworkPhoto
+        )
     }
 
 

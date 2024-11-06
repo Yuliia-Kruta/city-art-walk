@@ -54,8 +54,6 @@
         </LinearLayout>
     </LinearLayout>
 
-
-
     <Button
         android:id="@+id/artwork_date"
         android:layout_width="match_parent"
@@ -96,8 +94,6 @@
             android:layout_height="wrap_content"
             android:text="@string/get_gps_text"
             android:layout_marginStart="8dp" />
-
-
     </LinearLayout>
 
     <Button

@@ -10,5 +10,6 @@ data class Artwork(
     @PrimaryKey val id: UUID,
     val title: String,
     val date: Date,
-    val address: String
+    val address: String,
+    val photoFileName: String? = null
 )

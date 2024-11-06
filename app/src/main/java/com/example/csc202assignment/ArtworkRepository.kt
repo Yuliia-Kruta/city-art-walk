@@ -3,6 +3,7 @@ package com.example.csc202assignment
 import android.content.Context
 import androidx.room.Room
 import com.example.csc202assignment.database.ArtworkDatabase
+import com.example.csc202assignment.database.migration_1_2
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
@@ -23,39 +24,11 @@ class ArtworkRepository private constructor(
             ArtworkDatabase::class.java,
             DATABASE_NAME
         )
+        .addMigrations(migration_1_2)
         .build()
 
     fun getArtworks(): Flow<List<Artwork>> = database.artworkDao().getArtworks()
 
-    /*fun getArtworks(): Flow<List<Artwork>> = flow {
-        val dummyData = listOf(
-            Artwork(
-                id = UUID.randomUUID(),
-                title = "Starry Night",
-                date = Date(),
-                address = "123 Art Street, Museum District"
-            ),
-            Artwork(
-                id = UUID.randomUUID(),
-                title = "Mona Lisa",
-                date = Date(),
-                address = "456 Louvre Street, Paris"
-            ),
-            Artwork(
-                id = UUID.randomUUID(),
-                title = "The Persistence of Memory",
-                date = Date(),
-                address = "789 Surrealist Ave, New York"
-            ),
-            Artwork(
-                id = UUID.randomUUID(),
-                title = "The Scream",
-                date = Date(),
-                address = "101 Edvard Munch Rd, Oslo"
-            )
-        )
-        emit(dummyData)
-    }*/
     suspend fun getArtwork(id: UUID): Artwork = database.artworkDao().getArtwork(id)
 
     fun updateArtwork(artwork: Artwork) {

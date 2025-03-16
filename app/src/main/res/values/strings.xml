@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CityArtWalk</string>
+    <string name="artwork_title">Artwork Title</string>
+    <string name="recorded_date">Recorded Date</string>
+    <string name="artwork_address">Artwork Address</string>
+    <string name="artwork_title_hint">Enter a title of the artwork.</string>
+    <string name="artwork_address_hint">Enter an address of the artwork.</string>
+    <string name="new_artwork">New</string>
+    <string name="title">Title</string>
+    <string name="address">Address</string>
+    <string name="share_artwork_text">Share Artwork</string>
+    <string name="get_gps_text">Get GPS</string>
+    <string name="show_map_text">Show Map</string>
+    <string name="coordinates_not_available">Coordinates not available</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="coordinates">Coordinates</string>
+    <string name="getting_location">Getting location...</string>
+    <string name="artwork_summary">At %1$s on %2$s, I saw artwork called \"%3$s\", located at %4$s. The coordinates of the location are%5$s. Photo is %6$s.
+    </string>
+    <string name="artwork_summary_subject">CityArtWalk Artwork Summary</string>
+    <string name="share_summary">Share artwork summary via</string>
+    <string name="delete_artwork">Delete Artwork</string>
+    <string name="menu_help">Help</string>
+</resources>

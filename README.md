@@ -53,6 +53,14 @@ https://github.com/Yuliia-Kruta/city-art-walk.git
 
 <h5>Sync Gradle and install dependencies.</h5>
 
+<h5>Configure Maps API Key:</h5>
+Go to Google Cloud Console and create a new API key.<br/>
+Enable Maps SDK for  Android.<br/>
+Open or create local.properties file in your project directory.<br/>
+Add the following line:<br/>
+<code>MAPS_API_KEY=your_api_key_here</code>
+
+
 <h5>Build and run the app on an emulator or physical device.</h5>
 
 <h2>How to Use</h2>

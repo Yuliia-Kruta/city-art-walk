@@ -1,7 +1,7 @@
 <h1 align="center">CityArtWalk</h1>
 <br/>
 <br/>
-<img align="right" src="./city-art-walk.gif" width="20%" height="auto"/>
+<img  src="./city-art-walk.gif" width="70%" height="auto"/>
 
 <div id="user-content-toc">
   <ul align="left" style="list-style: none;">
